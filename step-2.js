@@ -36,7 +36,7 @@ function getRow(cube, command) {
   }
   else if (command === "R" || command === "R'") {
     for (let i = 0 ; i < CUBE_SIZE; i++) {
-      selectedRow[i] = cube[i][2];
+      selectedRow[i] = cube[i][CUBE_SIZE - 1];
     }
   }
   else if (command === "L" || command === "L'") {
@@ -46,7 +46,7 @@ function getRow(cube, command) {
   }
   else if (command === "B" || command === "B'") {
     for (let i = 0 ; i < CUBE_SIZE; i++) {
-      selectedRow[i] = cube[2][i];
+      selectedRow[i] = cube[CUBE_SIZE - 1][i];
     }
   }
 
@@ -57,14 +57,16 @@ function pushRow(selectedRow, command) {
   const pushedRow = [];
 
   if (command === "U" || command === "R" || command === "L'" || command === "B'") {
-    pushedRow[0] = selectedRow[1];
-    pushedRow[1] = selectedRow[2];
-    pushedRow[2] = selectedRow[0];
+    for (var i = 0 ; i < CUBE_SIZE - 1; i++) {
+      pushedRow[i] = selectedRow[i + 1];
+    }
+    pushedRow[i] = selectedRow[0];
   }
   else {
-    pushedRow[0] = selectedRow[2];
-    pushedRow[1] = selectedRow[0];
-    pushedRow[2] = selectedRow[1];
+    for (var i = 0 ; i < CUBE_SIZE - 1; i++) {
+      pushedRow[i + 1] = selectedRow[i];
+    }
+    pushedRow[0] = selectedRow[i];
   }
 
   return pushedRow;
@@ -78,7 +80,7 @@ function appendRowToCube(cube, pushedRow, command) {
   }
   else if (command === "R" || command === "R'") {
     for (let i = 0 ; i < CUBE_SIZE; i++) {
-      cube[i][2] = pushedRow[i];
+      cube[i][CUBE_SIZE - 1] = pushedRow[i];
     }
   }
   else if (command === "L" || command === "L'") {
@@ -88,7 +90,7 @@ function appendRowToCube(cube, pushedRow, command) {
   }
   else if (command === "B" || command === "B'") {
     for (let i = 0 ; i < CUBE_SIZE; i++) {
-      cube[2][i] = pushedRow[i];
+      cube[CUBE_SIZE - 1][i] = pushedRow[i];
     }
   }
 }
