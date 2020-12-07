@@ -1,6 +1,19 @@
 const readline = require('readline');
 const CUBE_SIZE = 3;
 
+/**
+ * @description validateRawData 메서드는 입력받은 데이터가 문제 조건에 맞는지 검사한다.
+ * @param {Array} rawData 입력받은 Input 값
+ */
+function validateRawData(rawData) {
+  for (let i = 0 ; i < rawData.length; i++) {
+    const c = rawData.charAt(i);
+    if(!(c === "'" || c === "U" || c === "R" || c === "L" || c === "B" || c === "Q")) {
+      throw new Error("게임 규칙에 맞는 문자만 입력 가능합니다.");
+    }
+  }
+}
+
 function printCube(cube) {
   for (let i = 0 ; i < CUBE_SIZE; i++) {
     let row = "";
@@ -113,6 +126,8 @@ function main() {
   rl.setPrompt("CODE_CHILD> ");
   rl.prompt();
   rl.on("line", function(line) {
+    validateRawData(line);
+
     if (line === "Q") {
       console.log("Bye~");
       rl.close();
