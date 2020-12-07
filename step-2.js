@@ -44,7 +44,7 @@ function getRow(cube, command) {
       selectedRow[i] = cube[i][0];
     }
   }
-  else if (command === "R" || command === "R'") {
+  else if (command === "B" || command === "B'") {
     for (let i = 0 ; i < CUBE_SIZE; i++) {
       selectedRow[i] = cube[2][i];
     }
@@ -86,7 +86,7 @@ function appendRowToCube(cube, pushedRow, command) {
       cube[i][0] = pushedRow[i];
     }
   }
-  else if (command === "R" || command === "R'") {
+  else if (command === "B" || command === "B'") {
     for (let i = 0 ; i < CUBE_SIZE; i++) {
       cube[2][i] = pushedRow[i];
     }
