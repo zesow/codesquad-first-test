@@ -3,7 +3,7 @@ const CUBE_SIZE = 3;
 
 /**
  * @description validateRawData 메서드는 입력받은 데이터가 문제 조건에 맞는지 검사한다.
- * @param {Array} rawData 입력받은 Input 값
+ * @param {string} rawData 입력받은 Input 값
  */
 function validateRawData(rawData) {
   for (let i = 0 ; i < rawData.length; i++) {
@@ -14,6 +14,10 @@ function validateRawData(rawData) {
   }
 }
 
+/**
+ * @description printCube 메서드는 현재 큐브 상태를 출력한다.
+ * @param {Array} cube 큐브
+ */
 function printCube(cube) {
   for (let i = 0 ; i < CUBE_SIZE; i++) {
     let row = "";
@@ -25,6 +29,11 @@ function printCube(cube) {
   console.log();
 }
 
+/**
+ * @description makeCommandStack 메서드는 이후에 손쉽게 순서대로 명령들을 꺼내기 위해, 받은 커맨드들을 하나씩 Stack 에 넣어준다.
+ * @param {string} line 입력받는 커맨드들
+ * @returns {Array} commandStack 커맨드들이 들어간 Stack
+ */
 function makeCommandStack(line) {
   const commandStack = [];
   for (let i = line.length - 1 ; i >= 0; i--) {
@@ -39,6 +48,12 @@ function makeCommandStack(line) {
   return commandStack;
 }
 
+/**
+ * @description getRow 메서드는 명령어의 종류에 따라 조작해야될 Row를 반환해준다.
+ * @param {Array} cube 큐브
+ * @param {string} command 커맨드 하나
+ * @returns {Array} selectedRow 조작해야 할 Row
+ */
 function getRow(cube, command) {
   const selectedRow = [];
 
@@ -66,6 +81,12 @@ function getRow(cube, command) {
   return selectedRow;
 }
 
+/**
+ * @description pushRow 메서드는 명령어에 따라 왼쪽이나 오른쪽으로 한 칸 밀어준다.
+ * @param {Array} selectedRow 조작해야 할 Row
+ * @param {string} command 커맨드 하나
+ * @returns {Array} pushedRow 조작된 Row
+ */
 function pushRow(selectedRow, command) {
   const pushedRow = [];
 
@@ -85,6 +106,12 @@ function pushRow(selectedRow, command) {
   return pushedRow;
 }
 
+/**
+ * @description appendRowToCube 메서드는 최종적으로 조작된 Row를 원래 큐브에 반영해준다.
+ * @param {Array} cube 큐브
+ * @param {Array} pushedRow 조작된 Row
+ * @param {string} command 커맨드 하나
+ */
 function appendRowToCube(cube, pushedRow, command) {
   if (command === "U" || command === "U'") {
     for (let i = 0 ; i < CUBE_SIZE; i++) {
@@ -108,6 +135,11 @@ function appendRowToCube(cube, pushedRow, command) {
   }
 }
 
+/**
+ * @description rotateCube 메서드는 일련의 과정(한 줄 선택, 밀기, 큐브에 반영) 을 통해 명령어에 맞게 한 줄을 밀어준다.
+ * @param {Array} cube 큐브
+ * @param {string} command 커맨드 하나
+ */
 function rotateCube(cube, command) {
   const selectedRow = getRow(cube, command);
   const pushedRow = pushRow(selectedRow, command);
