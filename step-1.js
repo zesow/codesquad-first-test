@@ -1,5 +1,14 @@
 function pushWord({word, number, direction}) {
-  
+  let result = word;
+  for (let i = 0 ; i < number ; i++) {
+    if (direction === 'l') {
+      result = result.substring(1) + result.substring(0, 1);
+    }
+    else {
+      result = result.substring(result.length - 1) + result.substring(0, result.length - 1);
+    }
+  }
+  return result;
 }
 
 function validateRawData(rawData) {
@@ -36,7 +45,7 @@ function main() {
       data.number *= (-1);
       data.direction = data.direction === 'l' ? 'r' : 'l';
     }
-    
+
     const result = pushWord(data);
     console.log(result);
     
