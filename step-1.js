@@ -1,5 +1,5 @@
 function pushWord({word, number, direction}) {
-  return "";
+  
 }
 
 function validateRawData(rawData) {
@@ -14,7 +14,6 @@ function validateRawData(rawData) {
   if (!(rawData[2].toLowerCase() === 'l' || rawData[2].toLowerCase() === 'r')) {
     throw new Error("세 번째 파라미터는 반드시 left나 right 중 하나여야 합니다.");
   }
-
 }
 
 function main() {
@@ -31,7 +30,12 @@ function main() {
     
     data.word = rawData[0];
     data.number = parseInt(rawData[1]);
-    data.direction = rawData[2];
+    data.direction = rawData[2].toLowerCase();
+
+    if (data.number < 0) {
+      data.number *= (-1);
+      data.direction = data.direction === 'l' ? 'r' : 'l';
+    }
     
     const result = pushWord(data);
     console.log(result);
