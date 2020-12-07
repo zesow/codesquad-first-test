@@ -37,28 +37,68 @@ function makeCommandStack(line) {
   return commandStack;
 }
 
-function rotateCube(commandStack, cube) {
-  while (!commandStack.empty()) {
-    const commandNum = commandStack.pop();
-    switch (commandNum) {
-      case 0 :
-        break;
-      case 1 :
-        break;
-      case 2 :
-        break;
-      case 3 :
-        break;
-      case 4 :
-        break;
-      case 5 :
-        break;
-      case 6 :
-        break;
-      case 7 :
-        break;
-      
+function getRow(cube, commandNum) {
+  const selectedRow = [];
+
+  if (commandNum === 0 || commandNum === 1) {
+    for (let i = 0 ; i < CUBE_SIZE; i++) {
+      selectedRow[i] = cube[0][i];
     }
+  }
+  else if (commandNum === 2 || commandNum === 3) {
+    for (let i = 0 ; i < CUBE_SIZE; i++) {
+      selectedRow[i] = cube[i][2];
+    }
+  }
+  else if (commandNum === 4 || commandNum === 5) {
+    for (let i = 0 ; i < CUBE_SIZE; i++) {
+      selectedRow[i] = cube[i][0];
+    }
+  }
+  else if (commandNum === 6 || commandNum === 7) {
+    for (let i = 0 ; i < CUBE_SIZE; i++) {
+      selectedRow[i] = cube[2][i];
+    }
+  }
+
+  return selectedRow;
+}
+
+function pushRow(selectedRow, commandNum) {
+
+}
+
+function appendRowToCube(cube, pushedRow) {
+
+}
+
+function rotateCube(commandStack, cube) {
+  while (commandStack.length > 0) {
+    const commandNum = commandStack.pop();
+    const selectedRow = getRow(cube, commandNum);
+    const pushedRow = pushRow(selectedRow, commandNum);
+    appendRowToCube(cube, pushedRow);
+    
+    // switch (commandNum) {
+    //   case 0 :
+    //     const selectedRow = get;
+    //     break;
+    //   case 1 :
+    //     break;
+    //   case 2 :
+    //     break;
+    //   case 3 :
+    //     break;
+    //   case 4 :
+    //     break;
+    //   case 5 :
+    //     break;
+    //   case 6 :
+    //     break;
+    //   case 7 :
+    //     break;
+      
+    // }
 
     printCube(cube);
   }
