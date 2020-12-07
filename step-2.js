@@ -13,49 +13,38 @@ function printCube(cube) {
 }
 
 function makeCommandStack(line) {
-  const commandNumMapper = {
-    "U"  : 0,
-    "U'" : 1,
-    "R"  : 2,
-    "R'" : 3,
-    "L"  : 4,
-    "L'" : 5,
-    "B"  : 6,
-    "B'" : 7,
-    "Q"  : 8,
-  }
   const commandStack = [];
   for (let i = line.length - 1 ; i >= 0; i--) {
     if (line.charAt(i) === "'") {
       i -= 1;
-      commandStack.push(commandNumMapper[line.charAt(i) + "'"]);
+      commandStack.push(line.charAt(i) + "'");
     }
     else {
-      commandStack.push(commandNumMapper[line.charAt(i)]);
+      commandStack.push(line.charAt(i));
     }
   }
   return commandStack;
 }
 
-function getRow(cube, commandNum) {
+function getRow(cube, command) {
   const selectedRow = [];
 
-  if (commandNum === 0 || commandNum === 1) {
+  if (command === "U" || command === "U'") {
     for (let i = 0 ; i < CUBE_SIZE; i++) {
       selectedRow[i] = cube[0][i];
     }
   }
-  else if (commandNum === 2 || commandNum === 3) {
+  else if (command === "R" || command === "R'") {
     for (let i = 0 ; i < CUBE_SIZE; i++) {
       selectedRow[i] = cube[i][2];
     }
   }
-  else if (commandNum === 4 || commandNum === 5) {
+  else if (command === "L" || command === "L'") {
     for (let i = 0 ; i < CUBE_SIZE; i++) {
       selectedRow[i] = cube[i][0];
     }
   }
-  else if (commandNum === 6 || commandNum === 7) {
+  else if (command === "R" || command === "R'") {
     for (let i = 0 ; i < CUBE_SIZE; i++) {
       selectedRow[i] = cube[2][i];
     }
@@ -64,10 +53,10 @@ function getRow(cube, commandNum) {
   return selectedRow;
 }
 
-function pushRow(selectedRow, commandNum) {
+function pushRow(selectedRow, command) {
   const pushedRow = [];
 
-  if (commandNum === 0 || commandNum === 2 || commandNum === 5 || commandNum === 7) {
+  if (command === "U" || command === "R" || command === "L'" || command === "B'") {
     pushedRow[0] = selectedRow[1];
     pushedRow[1] = selectedRow[2];
     pushedRow[2] = selectedRow[0];
@@ -81,36 +70,33 @@ function pushRow(selectedRow, commandNum) {
   return pushedRow;
 }
 
-function appendRowToCube(cube, pushedRow, commandNum) {
-  if (commandNum === 0 || commandNum === 1) {
+function appendRowToCube(cube, pushedRow, command) {
+  if (command === "U" || command === "U'") {
     for (let i = 0 ; i < CUBE_SIZE; i++) {
       cube[0][i] = pushedRow[i];
     }
   }
-  else if (commandNum === 2 || commandNum === 3) {
+  else if (command === "R" || command === "R'") {
     for (let i = 0 ; i < CUBE_SIZE; i++) {
       cube[i][2] = pushedRow[i];
     }
   }
-  else if (commandNum === 4 || commandNum === 5) {
+  else if (command === "L" || command === "L'") {
     for (let i = 0 ; i < CUBE_SIZE; i++) {
       cube[i][0] = pushedRow[i];
     }
   }
-  else if (commandNum === 6 || commandNum === 7) {
+  else if (command === "R" || command === "R'") {
     for (let i = 0 ; i < CUBE_SIZE; i++) {
       cube[2][i] = pushedRow[i];
     }
   }
 }
 
-function rotateCube(commandStack, cube) {
-  while (commandStack.length > 0) {
-    const commandNum = commandStack.pop();
-    const selectedRow = getRow(cube, commandNum);
-    const pushedRow = pushRow(selectedRow, commandNum);
-    appendRowToCube(cube, pushedRow, commandNum);
-  }
+function rotateCube(cube, command) {
+  const selectedRow = getRow(cube, command);
+  const pushedRow = pushRow(selectedRow, command);
+  appendRowToCube(cube, pushedRow, command);
 }
 
 function main() {
@@ -131,8 +117,12 @@ function main() {
     }
 
     const commandStack = makeCommandStack(line);
-    rotateCube(commandStack, cube);
-    printCube(cube);
+    while (commandStack.length > 0) {
+      const command = commandStack.pop();
+      rotateCube(cube, command);
+      console.log(command);
+      printCube(cube);
+    }
     
     rl.prompt();
   }).on("close", function() {
