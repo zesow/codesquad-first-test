@@ -65,11 +65,43 @@ function getRow(cube, commandNum) {
 }
 
 function pushRow(selectedRow, commandNum) {
+  const pushedRow = [];
 
+  if (commandNum === 0 || commandNum === 2 || commandNum === 5 || commandNum === 7) {
+    pushedRow[0] = selectedRow[1];
+    pushedRow[1] = selectedRow[2];
+    pushedRow[2] = selectedRow[0];
+  }
+  else {
+    pushedRow[0] = selectedRow[2];
+    pushedRow[1] = selectedRow[0];
+    pushedRow[2] = selectedRow[1];
+  }
+
+  return pushedRow;
 }
 
-function appendRowToCube(cube, pushedRow) {
-
+function appendRowToCube(cube, pushedRow, commandNum) {
+  if (commandNum === 0 || commandNum === 1) {
+    for (let i = 0 ; i < CUBE_SIZE; i++) {
+      cube[0][i] = pushedRow[i];
+    }
+  }
+  else if (commandNum === 2 || commandNum === 3) {
+    for (let i = 0 ; i < CUBE_SIZE; i++) {
+      cube[i][2] = pushedRow[i];
+    }
+  }
+  else if (commandNum === 4 || commandNum === 5) {
+    for (let i = 0 ; i < CUBE_SIZE; i++) {
+      cube[i][0] = pushedRow[i];
+    }
+  }
+  else if (commandNum === 6 || commandNum === 7) {
+    for (let i = 0 ; i < CUBE_SIZE; i++) {
+      cube[2][i] = pushedRow[i];
+    }
+  }
 }
 
 function rotateCube(commandStack, cube) {
@@ -77,30 +109,7 @@ function rotateCube(commandStack, cube) {
     const commandNum = commandStack.pop();
     const selectedRow = getRow(cube, commandNum);
     const pushedRow = pushRow(selectedRow, commandNum);
-    appendRowToCube(cube, pushedRow);
-    
-    // switch (commandNum) {
-    //   case 0 :
-    //     const selectedRow = get;
-    //     break;
-    //   case 1 :
-    //     break;
-    //   case 2 :
-    //     break;
-    //   case 3 :
-    //     break;
-    //   case 4 :
-    //     break;
-    //   case 5 :
-    //     break;
-    //   case 6 :
-    //     break;
-    //   case 7 :
-    //     break;
-      
-    // }
-
-    printCube(cube);
+    appendRowToCube(cube, pushedRow, commandNum);
   }
 }
 
@@ -122,7 +131,8 @@ function main() {
     }
 
     const commandStack = makeCommandStack(line);
-    rotateCube(commandStack, cube)
+    rotateCube(commandStack, cube);
+    printCube(cube);
     
     rl.prompt();
   }).on("close", function() {
