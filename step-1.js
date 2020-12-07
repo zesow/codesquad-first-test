@@ -1,3 +1,5 @@
+const readline = require('readline');
+
 function pushWord({word, number, direction}) {
   let result = word;
   for (let i = 0 ; i < number ; i++) {
@@ -25,9 +27,22 @@ function validateRawData(rawData) {
   }
 }
 
-function main() {
-  const readline = require('readline');
+function preprocessRawData(rawData) {
   const data = {};
+
+  data.word = rawData[0];
+  data.number = parseInt(rawData[1]);
+  data.direction = rawData[2].toLowerCase();
+
+  if (data.number < 0) {
+    data.number *= (-1);
+    data.direction = data.direction === 'l' ? 'r' : 'l';
+  }
+
+  return data;
+}
+
+function main() {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
@@ -37,20 +52,12 @@ function main() {
     const rawData = line.split(" ");
     validateRawData(rawData);
     
-    data.word = rawData[0];
-    data.number = parseInt(rawData[1]);
-    data.direction = rawData[2].toLowerCase();
+    const processedData = preprocessRawData(rawData);
 
-    if (data.number < 0) {
-      data.number *= (-1);
-      data.direction = data.direction === 'l' ? 'r' : 'l';
-    }
-
-    const result = pushWord(data);
+    const result = pushWord(processedData);
     console.log(result);
     
     rl.close();
-
   }).on("close", function() {
     process.exit();
   });
