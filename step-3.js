@@ -1,5 +1,6 @@
 const readline = require('readline');
 const CUBE_SIZE = 3;
+const SIDE_NUMBER = 4;
 
 /**
  * @description makeCommandStack 메서드는 이후에 손쉽게 순서대로 명령들을 꺼내기 위해, 받은 커맨드들을 하나씩 Stack 에 넣어준다.
@@ -77,8 +78,85 @@ function printCube(cube) {
     }
     console.log(row);
   }
-
 }
+
+/**
+ * @description getRow 메서드는 명령어의 종류에 따라 조작해야될 Row를 반환해준다.
+ * @param {Array} cube 큐브
+ * @param {string} command 커맨드 하나
+ * @returns {Array} selectedRow 조작해야 할 Row
+ */
+function getFaceAndRows(cube, command) {
+  const selectedFaceAndRows = {
+    face : [],
+    rows : []
+  };
+
+  let temp = [];
+  if (command.charAt(0) === "U") {
+    for (let i = 0 ; i < CUBE_SIZE; i++) {
+      temp = [];
+      for (let j = 0; j < CUBE_SIZE; j++) {
+        temp.push(cube.up[i][j]);
+      }
+      selectedFaceAndRows.face.push(temp);
+    }
+
+    temp = [];
+    for (let i = 0; i < CUBE_SIZE; i++) {
+      temp.push(cube.left[0][i]);
+    }
+    selectedFaceAndRows.rows.push(temp);
+
+    temp = [];
+    for (let i = 0; i < CUBE_SIZE; i++) {
+      temp.push(cube.front[0][i]);
+    }
+    selectedFaceAndRows.rows.push(temp);
+
+    temp = [];
+    for (let i = 0; i < CUBE_SIZE; i++) {
+      temp.push(cube.right[0][i]);
+    }
+    selectedFaceAndRows.rows.push(temp);
+
+    temp = [];
+    for (let i = 0; i < CUBE_SIZE; i++) {
+      temp.push(cube.back[0][i]);
+    }
+    selectedFaceAndRows.rows.push(temp);
+    
+  }
+  else if (command.charAt(0) === "L") {
+    
+  }
+  else if (command.charAt(0) === "F") {
+    
+  }
+  else if (command.charAt(0) === "R") {
+    
+  }
+  else if (command.charAt(0) === "B") {
+    
+  }
+  else if (command.charAt(0) === "D") {
+    
+  }
+
+  return selectedFaceAndRows;
+}
+
+/**
+ * @description rotateCube 메서드는 일련의 과정(한 줄 선택, 밀기, 큐브에 반영) 을 통해 명령어에 맞게 한 줄을 밀어준다.
+ * @param {Array} cube 큐브
+ * @param {string} command 커맨드 하나
+ */
+function rotateCube(cube, command) {
+  const selectedFaceAndRows = getFaceAndRows(cube, command);
+  console.log(selectedFaceAndRows);
+  // const pushedFaceAndRows = pushFaceAndRows(selectedFaceAndRows, command);
+}
+
 
 function main() {
   const cube = {
@@ -109,7 +187,7 @@ function main() {
     const commandStack = makeCommandStack(line);
     while (commandStack.length > 0) {
       const command = commandStack.pop();
-    //   rotateCube(cube, command);
+      rotateCube(cube, command);
       console.log(command);
       printCube(cube);
     }
