@@ -34,38 +34,22 @@ function printCube(cube) {
   for (let i = 0 ; i < CUBE_SIZE; i++) {
     let row = "               ";
     for (let j = 0 ; j < CUBE_SIZE; j++) {
-      row += `${cube.up[i][j] + " "}`;
+      row += `${cube[0][i][j] + " "}`;
     }
     console.log(row);
   }
 
   console.log();
-
-  for (let i = 0 ; i < CUBE_SIZE; i++) {
+  
+  for (let j = 0 ; j < CUBE_SIZE; j++) {
     let row = "";
-    for (let j = 0 ; j < CUBE_SIZE; j++) {
-      row += `${cube.left[i][j] + " "}`;
+    for (let i = 1; i < 5; i++) {
+      for (let k = 0 ; k < CUBE_SIZE; k++) {
+        row += cube[i][j][k] + " ";
+      }
+      row.trimRight();
+      row += "    ";
     }
-    row.trimRight();
-    row += "    ";
-
-    for (let j = 0 ; j < CUBE_SIZE; j++) {
-      row += `${cube.front[i][j] + " "}`;
-    }
-    row.trimRight();
-    row += "    ";
-
-    for (let j = 0 ; j < CUBE_SIZE; j++) {
-      row += `${cube.right[i][j] + " "}`;
-    }
-    row.trimRight();
-    row += "    ";
-
-    for (let j = 0 ; j < CUBE_SIZE; j++) {
-      row += `${cube.back[i][j] + " "}`;
-    }
-    row.trimRight();
-
     console.log(row);
   }
 
@@ -74,7 +58,7 @@ function printCube(cube) {
   for (let i = 0 ; i < CUBE_SIZE; i++) {
     let row = "               ";
     for (let j = 0 ; j < CUBE_SIZE; j++) {
-      row += `${cube.down[i][j] + " "}`;
+      row += `${cube[5][i][j] + " "}`;
     }
     console.log(row);
   }
@@ -159,14 +143,14 @@ function rotateCube(cube, command) {
 
 
 function main() {
-  const cube = {
-    up : [["B", "B", "B"], ["B", "B", "B"], ["B", "B", "B"]],
-    left : [["W", "W", "W"], ["W", "W", "W"], ["W", "W", "W"]],
-    front : [["O", "O", "O"], ["O", "O", "O"], ["O", "O", "O"]],
-    right : [["G", "G", "G"], ["G", "G", "G"], ["G", "G", "G"]],
-    back : [["Y", "Y", "Y"], ["Y", "Y", "Y"], ["Y", "Y", "Y"]],
-    down : [["R", "R", "R"], ["R", "R", "R"], ["R", "R", "R"]]
-  };
+  const cube = [
+    [["B", "B", "B"], ["B", "B", "B"], ["B", "B", "B"]], // up
+    [["W", "W", "W"], ["W", "W", "W"], ["W", "W", "W"]], // left
+    [["O", "O", "O"], ["O", "O", "O"], ["O", "O", "O"]], // front
+    [["G", "G", "G"], ["G", "G", "G"], ["G", "G", "G"]], // right
+    [["Y", "Y", "Y"], ["Y", "Y", "Y"], ["Y", "Y", "Y"]], // back
+    [["R", "R", "R"], ["R", "R", "R"], ["R", "R", "R"]] // down
+  ];
 
   const rl = readline.createInterface({
     input: process.stdin,
@@ -187,7 +171,7 @@ function main() {
     const commandStack = makeCommandStack(line);
     while (commandStack.length > 0) {
       const command = commandStack.pop();
-      rotateCube(cube, command);
+      // rotateCube(cube, command);
       console.log(command);
       printCube(cube);
     }
