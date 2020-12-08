@@ -34,7 +34,7 @@ function printCube(cube) {
   for (let i = 0 ; i < CUBE_SIZE; i++) {
     let row = "               ";
     for (let j = 0 ; j < CUBE_SIZE; j++) {
-      row += `${cube[0][i][j] + " "}`;
+      row += `${cube[0][(i * CUBE_SIZE) + j] + " "}`;
     }
     console.log(row);
   }
@@ -45,7 +45,7 @@ function printCube(cube) {
     let row = "";
     for (let i = 1; i < 5; i++) {
       for (let k = 0 ; k < CUBE_SIZE; k++) {
-        row += cube[i][j][k] + " ";
+        row += cube[i][j * CUBE_SIZE + k] + " ";
       }
       row.trimRight();
       row += "    ";
@@ -58,7 +58,7 @@ function printCube(cube) {
   for (let i = 0 ; i < CUBE_SIZE; i++) {
     let row = "               ";
     for (let j = 0 ; j < CUBE_SIZE; j++) {
-      row += `${cube[5][i][j] + " "}`;
+      row += `${cube[5][(i * CUBE_SIZE) + j] + " "}`;
     }
     console.log(row);
   }
@@ -79,40 +79,21 @@ function getFaceAndRows(cube, command) {
   let temp = [];
   if (command.charAt(0) === "U") {
     for (let i = 0 ; i < CUBE_SIZE; i++) {
+      for (let j = 0; j < CUBE_SIZE; j++) {
+        selectedFaceAndRows.face.push(cube[0][i][j]);
+      }
+    }
+
+    for (let i = 1; i < 5; i++) {
       temp = [];
       for (let j = 0; j < CUBE_SIZE; j++) {
-        temp.push(cube.up[i][j]);
+        temp.push(cube[i][0][j]);
       }
-      selectedFaceAndRows.face.push(temp);
-    }
-
-    temp = [];
-    for (let i = 0; i < CUBE_SIZE; i++) {
-      temp.push(cube.left[0][i]);
-    }
-    selectedFaceAndRows.rows.push(temp);
-
-    temp = [];
-    for (let i = 0; i < CUBE_SIZE; i++) {
-      temp.push(cube.front[0][i]);
-    }
-    selectedFaceAndRows.rows.push(temp);
-
-    temp = [];
-    for (let i = 0; i < CUBE_SIZE; i++) {
-      temp.push(cube.right[0][i]);
-    }
-    selectedFaceAndRows.rows.push(temp);
-
-    temp = [];
-    for (let i = 0; i < CUBE_SIZE; i++) {
-      temp.push(cube.back[0][i]);
-    }
-    selectedFaceAndRows.rows.push(temp);
-    
+      selectedFaceAndRows.rows.push(temp);
+    }    
   }
   else if (command.charAt(0) === "L") {
-    
+
   }
   else if (command.charAt(0) === "F") {
     
@@ -144,12 +125,12 @@ function rotateCube(cube, command) {
 
 function main() {
   const cube = [
-    [["B", "B", "B"], ["B", "B", "B"], ["B", "B", "B"]], // up
-    [["W", "W", "W"], ["W", "W", "W"], ["W", "W", "W"]], // left
-    [["O", "O", "O"], ["O", "O", "O"], ["O", "O", "O"]], // front
-    [["G", "G", "G"], ["G", "G", "G"], ["G", "G", "G"]], // right
-    [["Y", "Y", "Y"], ["Y", "Y", "Y"], ["Y", "Y", "Y"]], // back
-    [["R", "R", "R"], ["R", "R", "R"], ["R", "R", "R"]] // down
+    ["B", "B", "B", "B", "B", "B", "B", "B", "B"], // up
+    ["W", "W", "W", "W", "W", "W", "W", "W", "W"], // left
+    ["O", "O", "O", "O", "O", "O", "O", "O", "O"], // front
+    ["G", "G", "G", "G", "G", "G", "G", "G", "G"], // right
+    ["Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y"], // back
+    ["R", "R", "R", "R", "R", "R", "R", "R", "R"]  // down
   ];
 
   const rl = readline.createInterface({
