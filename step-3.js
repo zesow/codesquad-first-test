@@ -1,6 +1,20 @@
 const readline = require('readline');
 const CUBE_SIZE = 3;
 const SIDE_NUMBER = 4;
+const sideIndexes = {
+  up    : [1, 2, 3, 4],
+  left  : [0, 2, 4, 5],
+  front : [0, 1, 3, 5],
+  right : [0, 2, 4, 5],
+  back  : [0, 1, 3, 5],
+  down  : [1, 2, 3, 4],
+}
+const rowIndexes = {
+  up    : [0, 1, 2],
+  left  : [0, 3, 6],
+  right : [2, 5, 8],
+  down  : [6, 7, 8]
+}
 
 /**
  * @description makeCommandStack 메서드는 이후에 손쉽게 순서대로 명령들을 꺼내기 위해, 받은 커맨드들을 하나씩 Stack 에 넣어준다.
@@ -76,36 +90,43 @@ function getFaceAndRows(cube, command) {
     rows : []
   };
 
-  let temp = [];
   if (command.charAt(0) === "U") {
-    for (let i = 0 ; i < CUBE_SIZE; i++) {
-      for (let j = 0; j < CUBE_SIZE; j++) {
-        selectedFaceAndRows.face.push(cube[0][i][j]);
-      }
-    }
+    selectedFaceAndRows.face = [...cube[0]];
 
-    for (let i = 1; i < 5; i++) {
-      temp = [];
+    for (let i = 0; i < SIDE_NUMBER; i++) {
       for (let j = 0; j < CUBE_SIZE; j++) {
-        temp.push(cube[i][0][j]);
+        selectedFaceAndRows.rows.push(cube[sideIndexes.up[i]][rowIndexes.up[j]]);
       }
-      selectedFaceAndRows.rows.push(temp);
     }    
   }
   else if (command.charAt(0) === "L") {
+    selectedFaceAndRows.face = [...cube[1]];
 
+    for (let i = 0; i < SIDE_NUMBER; i++) {
+      for (let j = 0; j < CUBE_SIZE; j++) {
+        selectedFaceAndRows.rows.push(cube[sideIndexes.left[i]][rowIndexes.left[j]]);
+      }
+    }
   }
   else if (command.charAt(0) === "F") {
-    
+    selectedFaceAndRows.face = [...cube[2]];
+
+
   }
   else if (command.charAt(0) === "R") {
-    
+    selectedFaceAndRows.face = [...cube[3]];
+
+
   }
   else if (command.charAt(0) === "B") {
-    
+    selectedFaceAndRows.face = [...cube[4]];
+
+
   }
   else if (command.charAt(0) === "D") {
-    
+    selectedFaceAndRows.face = [...cube[5]];
+
+
   }
 
   return selectedFaceAndRows;
@@ -152,7 +173,7 @@ function main() {
     const commandStack = makeCommandStack(line);
     while (commandStack.length > 0) {
       const command = commandStack.pop();
-      // rotateCube(cube, command);
+      rotateCube(cube, command);
       console.log(command);
       printCube(cube);
     }
